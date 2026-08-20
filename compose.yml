@@ -10,3 +10,13 @@ services:
     ports:
       - 9080:8080
     container_name: labboot
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./nginx.dockerfile
+      args:
+        - "PUBLISH_DIR=labvue-front/dist"
+    ports:
+      - 9173:80
+    container_name: labvue
