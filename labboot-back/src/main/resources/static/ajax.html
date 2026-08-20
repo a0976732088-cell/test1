@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajax</title>
+    <script type="text/javascript" src="https://unpkg.com/axios@1.18.1/dist/axios.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/sweetalert2@11.26.25/dist/sweetalert2.all.min.js"></script>
+</head>
+<body>
+    <h1>Ajax</h1>
+    <button onclick="callFindById()">findById</button>
+    <button onclick="callFind()">find</button>
+    <button onclick="callCreate()">create</button>
+    <button onclick="callModify()">modify</button>
+    <button onclick="callRemove()">remove</button>
+
+    <script>
+        async function callRemove() {
+            const result = await Swal.fire({
+                title: "確定要刪除？",
+                icon: "question",
+                showCancelButton: true,
+            });
+            if(result.isConfirmed) {
+                try {
+                    const response = await axios.delete("http://localhost:8080/ajax/pages/products/13");
+                    if(response.data.success) {
+                        Swal.fire({
+                            title: response.data.message,
+                            icon: "success"
+                        });
+                    } else {
+                        Swal.fire({
+                            title: response.data.message,
+                            icon: "warning"
+                        });
+                    }
+                } catch (error) {
+                    console.log("callRemove error:", error);
+                    Swal.fire({
+                        title: "刪除失敗",
+                        text: error,
+                        icon: "error"
+                    });
+                }
+            }
+        }
+        async function callModify() {
+            const body = {
+                id: 13,
+                name: "hehehe",
+                price: 6.78,
+                make: "2026-10-13",
+                expire: 90
+            };
+            try {
+                const response = await axios.put("http://localhost:8080/ajax/pages/products/13", body);
+                if(response.data.success) {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    });
+                } else {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "warning"
+                    });
+                }
+            } catch (error) {
+                console.log("callModify error:", error);
+                Swal.fire({
+                    title: "修改失敗",
+                    text: error,
+                    icon: "error"
+                });
+            }
+        }
+        async function callCreate() {
+            const body = {
+                id: 13,
+                name: "hahaha",
+                price: 1.23,
+                make: "2026-07-13",
+                expire: 45
+            };
+            try {
+                const response = await axios.post("http://localhost:8080/ajax/pages/products", body);
+                if(response.data.success) {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "success"
+                    });
+                } else {
+                    Swal.fire({
+                        title: response.data.message,
+                        icon: "warning"
+                    });
+                }
+            } catch (error) {
+                console.log("callCreate error:", error);
+                Swal.fire({
+                    title: "新增失敗",
+                    text: error,
+                    icon: "error"
+                });
+            }
+        }
+
+        async function callFind() {
+            Swal.fire({
+                title: "執行中......",
+                allowOutsideClick: false,
+                showConfirmButton: false,
+            });
+            const body = {
+                "start": 0,
+                "rows": 10,
+                "sort": "id",
+                "dir": false
+            };
+            try {
+                const response = await axios.post("http://localhost:8080/ajax/pages/products/find", body);
+                console.log("callFind success:", response);
+
+                setTimeout(function() {
+                    Swal.close();
+                }, 500);
+            } catch (error) {
+                console.log("callFind error:", error);
+                Swal.fire({
+                    title: "查詢失敗",
+                    text: error,
+                    icon: "error"
+                });
+            }
+        }
+        function callFindById() {
+            Swal.fire({
+                title: "執行中......",
+                allowOutsideClick: false,
+                showConfirmButton: false,
+            });
+            axios.get("http://localhost:8080/ajax/pages/products/1").then(function(response) {
+                console.log("callFindById success:", response);
+
+                setTimeout(function() {
+                    Swal.close();
+                }, 500);
+            }).catch((error)=> {
+                console.log("callFindById error:", error);
+                Swal.fire({
+                    title: "查詢失敗",
+                    text: error,
+                    icon: "error"
+                });                
+            });
+        }
+    </script>
+</body>
+</html>
