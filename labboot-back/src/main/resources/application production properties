@@ -1,0 +1,1 @@
+spring.datasource.url=jdbc:sqlserver://host.docker.internal:9433;encrypt=true;trustServerCertificate=true;database=java;
