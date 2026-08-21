@@ -7,9 +7,9 @@ services:
       dockerfile: ./tomcat.dockerfile
       args:
       - "WAR_FILE=labboot-back/target/labboot-back.war"
-    ports:
-      - 9080:8080
-    container_name: labboot
+    # ports:
+    #   - 9080:8080
+    # container_name: labboot
 
   frontend:
     build:
@@ -17,6 +17,14 @@ services:
       dockerfile: ./nginx.dockerfile
       args:
         - "PUBLISH_DIR=labvue-front/dist"
-    ports:
-      - 9173:80
-    container_name: labvue
+    # ports:
+    #   - 9173:80
+    # container_name: labvue
+
+  reverse-proxy:
+   build:
+     context: .
+     dockerfile: ./caddy.dockerfile
+   ports:
+    - 9000:80
+    
