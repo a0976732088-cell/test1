@@ -23,7 +23,7 @@ services:
 
   reverse-proxy:
    build:
-     context: .
+     context: ./proxy
      dockerfile: ./caddy.dockerfile
    ports:
     - 9000:80
